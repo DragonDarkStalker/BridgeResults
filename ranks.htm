@@ -1,0 +1,108 @@
+<SCRIPT Language="JavaScript">
+var colour = [  '#FFFFFF'];
+var linelens = [76];
+var nSpeed = 20
+var nScroll = 1
+var nWaitS = 3000
+var nWaitE = 3000
+var nScrollup = 1000
+var yPosition = 0;
+var yDir = 0;
+var YTop = 0;
+var yStart = 0;
+var page_curr = 0
+var isIE = 0;
+var pages = [
+'<pre><b><font color="black">York University Bridge Club Wednesday Individual 25/11/2026\nSession 1 Section A\nDirector: Ben Williamson  Scorer: Ben Williamson   Received 0 of 54 scores.\n=================================================\nRank Ind Name [OVERALL RANKS]        Bds    XImpN\n=================================================\n  1=   1 Harry Groom                   0     0.00\n  1=   2 Bori Kasa                     0     0.00\n  1=   3 Archie Leppard                0     0.00\n  1=   4 Daniel Messenger              0     0.00\n  1=   5 Joshua Quick                  0     0.00\n  1=   6 Joseph Reece                  0     0.00\n  1=   7 Katya Senior                  0     0.00\n  1=   8 Rufus Hanna                   0     0.00\n  1=   9 Ben Williamson                0     0.00\n=================================================\n(printed 17:58:17 25/11/2026 IndScorer2.1.4(c) JAS\n</font></b></pre>'
+];
+function beginscroll()
+{
+   document.body.style.background = colour[0];
+   document.body.style.fontSize = Math.round(parent.document.body.clientWidth/linelens[0]*1.6 )+"px";
+   Frame.style.height = parent.document.body.clientHeight;
+   Frame1.style.height = parent.document.body.clientHeight;
+   Frame.style.width = parent.document.body.clientWidth - 2;
+   Frame1.style.width = parent.document.body.clientWidth - 2;
+   Frame1.style.background = colour[0];
+    var ua = navigator.userAgent.toLowerCase();
+    isIE = ((ua.indexOf("msie") != -1) && (ua.indexOf("opera") == -1) && (ua.indexOf("webtv") == -1));
+    document.getElementById( 'Frame1' ).innerHTML = pages[0];
+   yDocMax = parent.document.body.scrollHeight
+   parent.setTimeout("startscroll()", nWaitS )
+}
+function startscroll()
+{
+    parent.scroll (0, 0);
+    yStart = 0;
+    nDir = nScroll;
+   parent.setTimeout("scrolldown()", nWaitS )
+}
+function scrolldown()
+{
+   yWindowMax = parent.document.body.scrollTop
+   // check whether scrolling has reached the end
+   if ( ( yStart > 0 ) && ( yWindowMax == yTop ) )
+   {
+      if ( ( yTop > 0 ) && ( yPosition > 0 ) )
+      {
+        nDir = 0 - nScrollup;
+         yTop = 1;
+         parent.setTimeout ( "scrolldown()", nWaitE)
+        return;
+      }
+      else
+      {
+         yPosition = 0;
+         parent.scroll ( 0, 0 )
+         parent.setTimeout ( "endscroll()", 1)
+         return;
+      }
+   }
+   yStart = 1;
+   yPosition = yPosition + nDir;
+   parent.scroll ( 0, yPosition )
+   yTop = yWindowMax
+   parent.setTimeout ( "scrolldown()", nSpeed )
+}
+function endscroll()
+{
+   page_curr = page_curr + 1;
+   var nextpage = "winreload()";
+   if ( isIE )
+   {
+      Frame.filters[0].Apply();
+   }
+   if ( pages[page_curr] )
+   {
+      nextpage = "startscroll ( )";
+   }
+   else
+   {
+     page_curr = 0;
+   }
+    document.getElementById( 'Frame1' ).innerHTML = pages[page_curr];
+   document.body.style.fontSize = Math.round(parent.document.body.clientWidth/linelens[page_curr]*1.6 )+"px";
+   document.body.style.background = colour[page_curr];
+   Frame1.style.background = colour[page_curr];
+   if ( isIE )
+   {
+      Frame.filters[0].Play();
+   }
+   parent.setTimeout ( nextpage, nWaitS)
+}
+function winreload()
+{
+    window.location.reload(true)
+}
+</SCRIPT>
+<HTML>
+<BODY onLoad="beginscroll()">
+<div id="Frame" style="position:absolute; top: 0px; left: 0px; width: 200px; height:200px; filter:progid:DXImageTransform.Microsoft.RandomDissolve() ">
+<div id="Frame1" style="position:absolute; top:0px; left:0px; width:200px; height:200px; " align="left">
+<b><font  color="black">
+<PRE id="Frame1x"> Error Loading Text
+</PRE>
+</font> </b>
+</div>
+</div>
+</html>
